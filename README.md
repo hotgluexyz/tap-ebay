@@ -121,36 +121,6 @@ poetry install
 poetry shell
 ```
 
-### Run Tests
-
-```bash
-poetry run pytest
-```
-
-### Code Quality
-
-The project uses the following tools for code quality:
-
-```bash
-# Format code
-poetry run black tap_ebay
-
-# Sort imports
-poetry run isort tap_ebay
-
-# Lint code
-poetry run flake8 tap_ebay
-
-# Type checking
-poetry run mypy tap_ebay
-```
-
-### Run Linting Suite
-
-```bash
-poetry run tox
-```
-
 ## API Documentation
 
 For more information about the eBay API:

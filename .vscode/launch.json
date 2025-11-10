@@ -1,0 +1,44 @@
+{
+    // Use IntelliSense para saber los atributos posibles.
+    // Mantenga el puntero para ver las descripciones de los existentes atributos.
+    // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "tap-squarespace discover",
+            "type": "python",
+            "request": "launch",
+            "program": "../tap_ebay/tap.py",
+            "cwd": "${workspaceFolder}/.secrets",
+            "args": [
+                "--config",
+                "config.json",
+                "--discover",
+                ">",
+                "catalog.json"
+            ],
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/.venv/bin/python3"
+        },
+        {
+            "name": "tap-squarespace get",
+            "type": "python",
+            "request": "launch",
+            "justMyCode": false,
+            "program": "../tap_ebay/tap.py",
+            "cwd": "${workspaceFolder}/.secrets",
+            "args": [
+                "--config",
+                "config.json",
+                "--state",
+                "state.json",
+                "--catalog",
+                "selected-catalog.json",
+                ">",
+                "data.txt"
+            ],
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/.venv/bin/python3"
+        },
+    ]
+}

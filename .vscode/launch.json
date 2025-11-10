@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "tap-squarespace discover",
+            "name": "tap-ebay discover",
             "type": "python",
             "request": "launch",
             "program": "../tap_ebay/tap.py",
@@ -21,7 +21,7 @@
             "python": "${workspaceFolder}/.venv/bin/python3"
         },
         {
-            "name": "tap-squarespace get",
+            "name": "tap-ebay get",
             "type": "python",
             "request": "launch",
             "justMyCode": false,

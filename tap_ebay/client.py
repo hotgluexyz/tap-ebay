@@ -10,6 +10,7 @@ from hotglue_tap_sdk.helpers.jsonpath import extract_jsonpath
 from hotglue_tap_sdk.streams import RESTStream
 
 from tap_ebay.auth import EbayAuthenticator
+from datetime import timedelta
 
 
 
@@ -52,7 +53,7 @@ class EbayStream(RESTStream):
         if next_page_token:
             params["offset"] = next_page_token
         if self.replication_key:
-            start_date = self.get_starting_time(context)
+            start_date = self.get_starting_time(context) + timedelta(seconds=1)
             params["filter"] = f"lastmodifieddate:[{start_date.strftime('%Y-%m-%dT%H:%M:%SZ')}..]"
         return params
 

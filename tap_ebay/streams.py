@@ -1,6 +1,7 @@
 """Stream type classes for tap-ebay."""
 
 from hotglue_tap_sdk import typing as th
+from typing import Optional
 
 from tap_ebay.client import EbayStream
 from tap_ebay.schema_helper import amount_schema
@@ -268,4 +269,84 @@ class OrdersStream(EbayStream):
         th.Property("salesRecordReference", th.StringType),
         th.Property("totalFeeBasisAmount", amount_schema),
         th.Property("totalMarketplaceFee", amount_schema)
+    ).to_dict()
+
+class InventoryItemsStream(EbayStream):
+    name = "inventory_items"
+    path = "/sell/inventory/v1/inventory_item"
+    primary_keys = ["sku"]
+    records_jsonpath = "$.inventoryItems[*]"
+
+    schema = th.PropertiesList(
+        th.Property("availability", th.ObjectType(
+            th.Property("pickupAtLocationAvailability", th.ArrayType(
+                th.ObjectType(
+                    th.Property("availabilityType", th.StringType),
+                    th.Property("fulfillmentTime", th.ObjectType(
+                        th.Property("unit", th.StringType),
+                        th.Property("value", th.IntegerType),
+                    )),
+                    th.Property("merchantLocationKey", th.StringType),
+                    th.Property("quantity", th.IntegerType),
+                )
+            )),
+            th.Property("shipToLocationAvailability", th.ObjectType(
+                th.Property("allocationByFormat", th.ObjectType(
+                    th.Property("auction", th.IntegerType),
+                    th.Property("fixedPrice", th.IntegerType),
+                )),
+                th.Property("availabilityDistributions", th.ArrayType(
+                    th.ObjectType(
+                        th.Property("fulfillmentTime", th.ObjectType(
+                            th.Property("unit", th.StringType),
+                            th.Property("value", th.IntegerType),
+                        )),
+                        th.Property("merchantLocationKey", th.StringType),
+                        th.Property("quantity", th.IntegerType),
+                    )
+                )),
+                th.Property("quantity", th.IntegerType),
+            )),
+        )),
+        th.Property("condition", th.StringType),
+        th.Property("conditionDescription", th.StringType),
+        th.Property("conditionDescriptors", th.ArrayType(
+            th.ObjectType(
+                th.Property("additionalInfo", th.StringType),
+                th.Property("name", th.StringType),
+                th.Property("values", th.ArrayType(th.StringType)),
+            )
+        )),
+        th.Property("groupIds", th.ArrayType(th.StringType)),
+        th.Property("inventoryItemGroupKeys", th.ArrayType(th.StringType)),
+        th.Property("locale", th.StringType),
+        th.Property("packageWeightAndSize", th.ObjectType(
+            th.Property("dimensions", th.ObjectType(
+                th.Property("height", th.NumberType),
+                th.Property("length", th.NumberType),
+                th.Property("unit", th.StringType),
+                th.Property("width", th.NumberType),
+            )),
+            th.Property("packageType", th.StringType),
+            th.Property("shippingIrregular", th.BooleanType),
+            th.Property("weight", th.ObjectType(
+                th.Property("unit", th.StringType),
+                th.Property("value", th.NumberType),
+            )),
+        )),
+        th.Property("product", th.ObjectType(
+            th.Property("aspects", th.StringType),
+            th.Property("brand", th.StringType),
+            th.Property("description", th.StringType),
+            th.Property("ean", th.ArrayType(th.StringType)),
+            th.Property("epid", th.StringType),
+            th.Property("imageUrls", th.ArrayType(th.StringType)),
+            th.Property("isbn", th.ArrayType(th.StringType)),
+            th.Property("mpn", th.StringType),
+            th.Property("subtitle", th.StringType),
+            th.Property("title", th.StringType),
+            th.Property("upc", th.ArrayType(th.StringType)),
+            th.Property("videoIds", th.ArrayType(th.StringType)),
+        )),
+        th.Property("sku", th.StringType),
     ).to_dict()

@@ -6,10 +6,12 @@ from hotglue_tap_sdk import Tap, Stream
 from hotglue_tap_sdk import typing as th  # JSON schema typing helpers
 # TODO: Import your custom stream types here:
 from tap_ebay.streams import (
+    InventoryItemsStream,
     OrdersStream,
 )
 STREAM_TYPES = [
     OrdersStream,
+    InventoryItemsStream,
 ]
 
 

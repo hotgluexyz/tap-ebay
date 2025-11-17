@@ -1,7 +1,6 @@
 """Ebay Authentication."""
 
 
-from tkinter import N
 from hotglue_tap_sdk.authenticators import OAuthAuthenticator, SingletonMeta
 
 

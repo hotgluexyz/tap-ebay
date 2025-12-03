@@ -17,8 +17,15 @@ from datetime import timedelta
 class EbayStream(RESTStream):
     """Ebay stream class."""
 
-    url_base = "https://api.ebay.com"
     limit = 200
+
+    @property
+    def is_sandbox(self) -> bool:
+        return self.config.get("is_sandbox", False)
+
+    @property
+    def url_base(self) -> str:
+        return "https://api.sandbox.ebay.com" if self.is_sandbox else "https://api.ebay.com"
 
     @property
     @cached
@@ -52,7 +59,7 @@ class EbayStream(RESTStream):
         params["limit"] = self.limit
         if next_page_token:
             params["offset"] = next_page_token
-        if self.replication_key:
+        if self.replication_key and not self.is_sandbox:
             start_date = self.get_starting_time(context) + timedelta(seconds=1)
             params["filter"] = f"lastmodifieddate:[{start_date.strftime('%Y-%m-%dT%H:%M:%SZ')}..]"
         return params

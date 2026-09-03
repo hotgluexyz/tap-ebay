@@ -22,6 +22,23 @@ class EbayAuthenticator(OAuthAuthenticator, metaclass=SingletonMeta):
         """Return the authentication credentials for the request."""
         return (self.config["client_id"], self.config["client_secret"])
 
+    def update_access_token(self) -> None:
+        """Refresh the access token, with a clearer error for expired refresh tokens.
+           since eBay returns cryptic error messages.
+        """
+        try:
+            super().update_access_token()
+        except Exception as ex:
+            body = getattr(getattr(ex, "response", None), "text", "") or ""
+            if "invalid_grant" not in f"{ex} {body}":
+                raise
+            msg = (
+                "eBay OAuth refresh failed with invalid_grant. The refresh token "
+                "may be expired or revoked; the user may need to re-authenticate. "
+                f"Original error: {ex}"
+            )
+            self.logger.error(msg)
+            raise RuntimeError(msg) from ex
 
     @classmethod
     def create_for_stream(cls, stream) -> "EbayAuthenticator":
